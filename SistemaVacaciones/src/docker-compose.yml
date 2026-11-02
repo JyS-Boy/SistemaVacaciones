@@ -1,0 +1,13 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: VacacionesSQLServer
+    restart: always
+    environment:
+      SA_PASSWORD: "Password2026"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "express"
+    ports:
+      - "1500:1433"
+    volumes:
+      - C:\Users\yo\Documents\Docker\Volumenes\SistemaVacaciones:/var/opt/mssql/data
