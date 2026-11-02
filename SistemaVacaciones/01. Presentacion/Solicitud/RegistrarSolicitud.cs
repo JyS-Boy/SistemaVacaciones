@@ -1,4 +1,6 @@
+using SistemaVacaciones._01._Presentacion.Empleado;
 using SistemaVacaciones._02._Negocio.DTOs.Solicitudes;
+using SistemaVacaciones._02._Negocio.Servicios.Empleados;
 using SistemaVacaciones._02._Negocio.Servicios.Solicitudes;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using System;
@@ -12,13 +14,29 @@ namespace SistemaVacaciones._01._Presentacion.Solicitud
             Console.Clear();
             Console.WriteLine("=== Registrar Solicitud de Vacaciones ===");
 
+            var listarEmpleado = new ListarEmpleado();
+            var empleados = new ListaEmpleado(context).ListEmpleados();
+            if (empleados.Count == 0)
+            {
+                Console.WriteLine("No hay empleados registrados para actualizar.");
+                return;
+            }
+            listarEmpleado.MostrarEmpleados(empleados);
+            Console.WriteLine();
+
             Console.Write("Ingrese el id del empleado: ");
             var entradaId = Console.ReadLine();
-            while (!int.TryParse(entradaId, out int idEmpleado) || idEmpleado <= 0)
+            if (!int.TryParse(entradaId, out int idEmpleado) || idEmpleado <= 0)
             {
                 Console.WriteLine("El id del empleado debe ser un número entero mayor a cero.");
-                Console.Write("Ingrese el id del empleado: ");
-                entradaId = Console.ReadLine();
+                return;
+            }
+
+            var empleado = context.Empleados.Find(idEmpleado);
+            if (empleado == null || !empleado.IsActive)
+            {
+                Console.WriteLine("Empleado no encontrado.");
+                return;
             }
 
             Console.Write("Ingrese la fecha de inicio (yyyy-MM-dd): ");

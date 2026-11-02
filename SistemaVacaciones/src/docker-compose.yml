@@ -10,4 +10,4 @@ services:
     ports:
       - "1500:1433"
     volumes:
-      - C:\Users\yo\Documents\Docker\Volumenes\SistemaVacaciones:/var/opt/mssql/data
+      - C:\Users\jpalomino\Documents\Docker\Volumenes\SistemaVacaciones:/var/opt/mssql/data

@@ -10,7 +10,6 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
         public static void Actualizar(VacacionesDbContext context)
         {
             Console.Clear();
-            Console.WriteLine("=== Actualizar Empleado ===");
 
             var listarEmpleado = new ListarEmpleado();
             var empleados = new ListaEmpleado(context).ListEmpleados();
@@ -23,8 +22,8 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
             Console.WriteLine();
 
             var servicio = new ActualizaEmpleado(context);
-
-            Console.Write("Ingrese el id del empleado: ");
+            Console.WriteLine("=== Actualizar Empleado ===");
+            Console.Write("Ingrese el id del empleado a actualizar: ");
             var entradaId = Console.ReadLine();
 
             if (!int.TryParse(entradaId, out var idSeleccionado) || idSeleccionado <= 0)
@@ -34,7 +33,7 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
             }
 
             var empleado = servicio.ObtenerId(idSeleccionado);
-            if (empleado is null)
+            if (empleado is null || !empleado.IsActive)
             {
                 Console.WriteLine("Empleado no existe");
                 return;

@@ -18,6 +18,7 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
         public List<ListarClienteDTO> ListEmpleados()
         {
             var empleados = _context.Set<Empleado>()
+                .Where(e => e.IsActive)
                 .Select(e => new ListarClienteDTO
                 {
                     Id = e.IdEmpleado,

@@ -46,5 +46,32 @@ namespace SistemaVacaciones._03._AccesoDatos.Entidades
             Estado = estado;
             MotivoRechazo = motivoRechazo;
         }
+
+        public void Aprobar()
+        {
+            if (Estado != EstadoSolicitud.Pendiente)
+            {
+                throw new InvalidOperationException("Solo se pueden aprobar solicitudes en estado pendiente.");
+            }
+
+            Estado = EstadoSolicitud.Aprobada;
+            MotivoRechazo = string.Empty;
+        }
+
+        public void Rechazar(string motivo)
+        {
+            if (Estado != EstadoSolicitud.Pendiente)
+            {
+                throw new InvalidOperationException("Solo se pueden rechazar solicitudes en estado pendiente.");
+            }
+
+            if (string.IsNullOrWhiteSpace(motivo))
+            {
+                throw new ArgumentException("El motivo de rechazo es obligatorio.");
+            }
+
+            Estado = EstadoSolicitud.Rechazada;
+            MotivoRechazo = motivo.Trim();
+        }
     }
 }

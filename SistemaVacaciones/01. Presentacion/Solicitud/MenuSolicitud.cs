@@ -27,13 +27,13 @@ namespace SistemaVacaciones._01._Presentacion.Solicitud
                         RegistrarSolicitud.Registrar(context);
                         break;
                     case "2":
-                        // Lógica para consultar solicitud
+                        ConsultarSolicitud.Consultar(context);
                         break;
                     case "3":
-                        // Lógica para actualizar solicitud
+                        AprobarSolicitud.Aprobar(context);
                         break;
                     case "4":
-                        // Lógica para eliminar solicitud
+                        RechazarSolicitud.Rechazar(context);
                         break;
                     case "5":
                         salir = false;

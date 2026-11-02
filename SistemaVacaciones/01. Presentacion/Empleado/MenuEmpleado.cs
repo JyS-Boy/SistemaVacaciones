@@ -37,7 +37,7 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
                         ActualizarEmpleado.Actualizar(context);
                         break;
                     case "4":
-                        //EliminarEmpleado.Eliminar(context);
+                        EliminarEmpleado.Eliminar(context);
                         break;
                     case "5":
                         salir = false;
