@@ -2,9 +2,9 @@
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using SistemaVacaciones._03._AccesoDatos.Entidades;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
 {
@@ -17,15 +17,15 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
             _context = context;
         }
 
-        public Empleado? ObtenerId(int id)
+        public async Task<Empleado?> ObtenerIdAsync(int id)
         {
-            return _context.Set<Empleado>()
-                .FirstOrDefault(e => e.IdEmpleado == id);
+            return await _context.Set<Empleado>()
+                .FirstOrDefaultAsync(e => e.IdEmpleado == id);
         }
 
-        public bool Actualizar(ActualizarEmpleadoDTO empleadoDTO)
+        public async Task<bool> ActualizarAsync(ActualizarEmpleadoDTO empleadoDTO)
         {
-            var empleado = ObtenerId(empleadoDTO.IdEmpleado);
+            var empleado = await ObtenerIdAsync(empleadoDTO.IdEmpleado);
 
             if (empleado is null)
             {
@@ -33,7 +33,22 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
             }
 
             empleado.Actualizar(empleadoDTO.Nombre, empleadoDTO.Apellido, empleadoDTO.DiasDisponibles);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DesactivarAsync(int idEmpleado)
+        {
+            var empleado = await _context.Set<Empleado>()
+                .FirstOrDefaultAsync(e => e.IdEmpleado == idEmpleado);
+
+            if (empleado is null || !empleado.IsActive)
+            {
+                return false;
+            }
+
+            empleado.Desactivar();
+            await _context.SaveChangesAsync();
             return true;
         }
     }

@@ -5,7 +5,7 @@ using System.Configuration;
 
 static class Program
 {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         var connectionString = ConfigurationManager.ConnectionStrings["SistemaVacaciones"].ConnectionString;
         if (string.IsNullOrEmpty(connectionString))
@@ -16,6 +16,6 @@ static class Program
         var optionsBuilder = new DbContextOptionsBuilder<VacacionesDbContext>();
         optionsBuilder.UseSqlServer(connectionString);
         using var context = new VacacionesDbContext(optionsBuilder.Options);
-        MenuPrincipal.MostrarMenu(context);
+        await MenuPrincipal.MostrarMenuAsync(context);
     }
 }

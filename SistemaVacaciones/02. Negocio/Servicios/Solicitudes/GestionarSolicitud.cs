@@ -6,6 +6,7 @@ using SistemaVacaciones._04._Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
 {
@@ -18,10 +19,12 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
             _context = context;
         }
 
-        public List<ListarSolicitudDTO> Listar()
+        public async Task<List<ListarSolicitudDTO>> ListarAsync()
         {
-            return _context.SolicitudesVacaciones
+            return await _context.SolicitudesVacaciones
+                .AsNoTracking()
                 .Include(s => s.Empleado)
+                .Where(s => s.Estado == EstadoSolicitud.Pendiente)
                 .Select(s => new ListarSolicitudDTO
                 {
                     IdSolicitud = s.IdSolicitud,
@@ -34,12 +37,12 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
                     MotivoRechazo = s.MotivoRechazo
                 })
                 .OrderByDescending(s => s.IdSolicitud)
-                .ToList();
+                .ToListAsync();
         }
 
-        public void Aprobar(int idSolicitud)
+        public async Task AprobarAsync(int idSolicitud)
         {
-            var solicitud = ObtenerSolicitudConEmpleado(idSolicitud);
+            var solicitud = await ObtenerSolicitudConEmpleadoAsync(idSolicitud);
 
             if (solicitud is null)
             {
@@ -53,12 +56,12 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
 
             solicitud.Empleado.DescontarDiasDisponibles(solicitud.DiasSolicitados);
             solicitud.Aprobar();
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Rechazar(int idSolicitud, string motivo)
+        public async Task RechazarAsync(int idSolicitud, string motivo)
         {
-            var solicitud = ObtenerSolicitudConEmpleado(idSolicitud);
+            var solicitud = await ObtenerSolicitudConEmpleadoAsync(idSolicitud);
 
             if (solicitud is null)
             {
@@ -66,14 +69,14 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
             }
 
             solicitud.Rechazar(motivo);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        private SolicitudVacacion? ObtenerSolicitudConEmpleado(int idSolicitud)
+        private async Task<SolicitudVacacion?> ObtenerSolicitudConEmpleadoAsync(int idSolicitud)
         {
-            return _context.SolicitudesVacaciones
+            return await _context.SolicitudesVacaciones
                 .Include(s => s.Empleado)
-                .FirstOrDefault(s => s.IdSolicitud == idSolicitud);
+                .FirstOrDefaultAsync(s => s.IdSolicitud == idSolicitud);
         }
     }
 }

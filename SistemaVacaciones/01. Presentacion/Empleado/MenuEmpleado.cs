@@ -1,14 +1,12 @@
-﻿using SistemaVacaciones._02._Negocio.Servicios.Empleados;
-using SistemaVacaciones._03._AccesoDatos.ContextoBD;
+﻿using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._01._Presentacion.Empleado
 {
     public class MenuEmpleado
     {
-        public static void MostrarMenuEmpleado(VacacionesDbContext context)
+        public static async Task MostrarMenuEmpleadoAsync(VacacionesDbContext context)
         {
             Console.Clear();
             bool salir = true;
@@ -26,18 +24,16 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
                 switch (opcion)
                 {
                     case "1":
-                        RegistrarEmpleado.RegistraEmpleado(context);
+                        await RegistrarEmpleado.RegistraEmpleadoAsync(context);
                         break;
                     case "2":
-                        var listarEmpleado = new ListarEmpleado();
-                        var empleados = new ListaEmpleado(context).ListEmpleados();
-                        listarEmpleado.MostrarEmpleados(empleados);
+                        await ListarEmpleado.MostrarEmpleadosAsync(context);
                         break;
                     case "3":
-                        ActualizarEmpleado.Actualizar(context);
+                        await ActualizarEmpleado.ActualizarAsync(context);
                         break;
                     case "4":
-                        EliminarEmpleado.Eliminar(context);
+                        await EliminarEmpleado.EliminarAsync(context);
                         break;
                     case "5":
                         salir = false;

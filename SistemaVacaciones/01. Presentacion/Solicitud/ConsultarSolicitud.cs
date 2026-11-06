@@ -1,17 +1,18 @@
 using SistemaVacaciones._02._Negocio.Servicios.Solicitudes;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using System;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._01._Presentacion.Solicitud
 {
     public class ConsultarSolicitud
     {
-        public static bool Consultar(VacacionesDbContext context)
+        public static async Task<bool> ConsultarAsync(VacacionesDbContext context)
         {
             Console.Clear();
             Console.WriteLine("=== Consultar Solicitudes de Vacaciones ===");
 
-            var solicitudes = new GestionarSolicitud(context).Listar();
+            var solicitudes = await new GestionarSolicitud(context).ListarAsync();
             if (solicitudes.Count == 0)
             {
                 Console.WriteLine("No hay solicitudes registradas.");

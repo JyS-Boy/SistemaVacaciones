@@ -2,17 +2,18 @@ using SistemaVacaciones._02._Negocio.DTOs.Empleados;
 using SistemaVacaciones._02._Negocio.Servicios.Empleados;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using System;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._01._Presentacion.Empleado
 {
     public class ActualizarEmpleado
     {
-        public static void Actualizar(VacacionesDbContext context)
+        public static async Task ActualizarAsync(VacacionesDbContext context)
         {
             Console.Clear();
 
             var listarEmpleado = new ListarEmpleado();
-            var empleados = new ListaEmpleado(context).ListEmpleados();
+            var empleados = await new ListaEmpleado(context).ListEmpleadosAsync();
             if (empleados.Count == 0)
             {
                 Console.WriteLine("No hay empleados registrados para actualizar.");
@@ -32,7 +33,7 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
                 return;
             }
 
-            var empleado = servicio.ObtenerId(idSeleccionado);
+            var empleado = await servicio.ObtenerIdAsync(idSeleccionado);
             if (empleado is null || !empleado.IsActive)
             {
                 Console.WriteLine("Empleado no existe");
@@ -74,7 +75,7 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
                 DiasDisponibles = int.Parse(diasDisponibles)
             };
 
-            var actualizado = servicio.Actualizar(actualizaEmpleadoDto);
+            var actualizado = await servicio.ActualizarAsync(actualizaEmpleadoDto);
 
             Console.WriteLine(actualizado
                 ? "Empleado actualizado exitosamente."

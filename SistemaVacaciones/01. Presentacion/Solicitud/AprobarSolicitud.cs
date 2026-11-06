@@ -1,14 +1,15 @@
 using SistemaVacaciones._02._Negocio.Servicios.Solicitudes;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using System;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._01._Presentacion.Solicitud
 {
     public class AprobarSolicitud
     {
-        public static void Aprobar(VacacionesDbContext context)
+        public static async Task AprobarAsync(VacacionesDbContext context)
         {
-            var haySolicitudes = ConsultarSolicitud.Consultar(context);
+            var haySolicitudes = await ConsultarSolicitud.ConsultarAsync(context);
             if (!haySolicitudes)
             {
                 return;
@@ -24,7 +25,7 @@ namespace SistemaVacaciones._01._Presentacion.Solicitud
             try
             {
                 var servicio = new GestionarSolicitud(context);
-                servicio.Aprobar(idSolicitud);
+                await servicio.AprobarAsync(idSolicitud);
                 Console.WriteLine("Solicitud aprobada exitosamente.");
             }
             catch (Exception ex)

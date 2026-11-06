@@ -4,12 +4,13 @@ using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._01._Presentacion
 {
     public class MenuPrincipal
     {
-        public static void MostrarMenu(VacacionesDbContext context)
+        public static async Task MostrarMenuAsync(VacacionesDbContext context)
         {
             
             bool salir = true;
@@ -25,10 +26,10 @@ namespace SistemaVacaciones._01._Presentacion
                 switch (opcion)
                 {
                     case "1":
-                        MenuEmpleado.MostrarMenuEmpleado(context);
+                        await MenuEmpleado.MostrarMenuEmpleadoAsync(context);
                         break;
                     case "2":
-                        MenuSolicitud.MostrarMenuSolicitud(context);
+                        await MenuSolicitud.MostrarMenuSolicitudAsync(context);
                         break;
                     case "3":
                         salir = false;

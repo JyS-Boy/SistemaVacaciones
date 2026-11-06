@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._01._Presentacion.Solicitud
 {
     public class MenuSolicitud
     {
-        public static void MostrarMenuSolicitud(VacacionesDbContext context)
+        public static async Task MostrarMenuSolicitudAsync(VacacionesDbContext context)
         {
             Console.Clear();
             bool salir = true;
@@ -24,16 +25,16 @@ namespace SistemaVacaciones._01._Presentacion.Solicitud
                 switch (opcion)
                 {
                     case "1":
-                        RegistrarSolicitud.Registrar(context);
+                        await RegistrarSolicitud.RegistrarAsync(context);
                         break;
                     case "2":
-                        ConsultarSolicitud.Consultar(context);
+                        await ConsultarSolicitud.ConsultarAsync(context);
                         break;
                     case "3":
-                        AprobarSolicitud.Aprobar(context);
+                        await AprobarSolicitud.AprobarAsync(context);
                         break;
                     case "4":
-                        RechazarSolicitud.Rechazar(context);
+                        await RechazarSolicitud.RechazarAsync(context);
                         break;
                     case "5":
                         salir = false;

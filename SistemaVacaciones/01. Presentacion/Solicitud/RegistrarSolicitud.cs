@@ -4,18 +4,19 @@ using SistemaVacaciones._02._Negocio.Servicios.Empleados;
 using SistemaVacaciones._02._Negocio.Servicios.Solicitudes;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using System;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._01._Presentacion.Solicitud
 {
     public class RegistrarSolicitud
     {
-        public static void Registrar(VacacionesDbContext context)
+        public static async Task RegistrarAsync(VacacionesDbContext context)
         {
             Console.Clear();
             Console.WriteLine("=== Registrar Solicitud de Vacaciones ===");
 
             var listarEmpleado = new ListarEmpleado();
-            var empleados = new ListaEmpleado(context).ListEmpleados();
+            var empleados = await new ListaEmpleado(context).ListEmpleadosAsync();
             if (empleados.Count == 0)
             {
                 Console.WriteLine("No hay empleados registrados para actualizar.");
@@ -32,7 +33,7 @@ namespace SistemaVacaciones._01._Presentacion.Solicitud
                 return;
             }
 
-            var empleado = context.Empleados.Find(idEmpleado);
+            var empleado = await context.Empleados.FindAsync(idEmpleado);
             if (empleado == null || !empleado.IsActive)
             {
                 Console.WriteLine("Empleado no encontrado.");
@@ -67,7 +68,7 @@ namespace SistemaVacaciones._01._Presentacion.Solicitud
             try
             {
                 var crearSolicitud = new CrearSolicitud(context);
-                crearSolicitud.Registrar(solicitudDto);
+                await crearSolicitud.RegistrarAsync(solicitudDto);
                 Console.WriteLine("Solicitud registrada exitosamente.");
             }
             catch (Exception ex)

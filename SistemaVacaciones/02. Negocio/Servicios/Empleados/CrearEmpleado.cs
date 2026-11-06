@@ -1,9 +1,7 @@
 ﻿using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using SistemaVacaciones._03._AccesoDatos.Entidades;
 using SistemaVacaciones._02._Negocio.DTOs.Empleados;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
 {
@@ -16,15 +14,15 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
             _context = context;
         }
 
-        public void Registrar(RegistroEmpleadoDTO empleadoDTO)
+        public async Task RegistrarAsync(RegistroEmpleadoDTO empleadoDTO)
         {
             var empleado = new Empleado(
                 empleadoDTO.Nombres,
                 empleadoDTO.Apellidos,
                 empleadoDTO.DiasDisponibles);
 
-            _context.Set<Empleado>().Add(empleado);
-            _context.SaveChanges();
+            await _context.Set<Empleado>().AddAsync(empleado);
+            await _context.SaveChangesAsync();
         }
     }
 }

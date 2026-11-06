@@ -2,8 +2,9 @@ using SistemaVacaciones._02._Negocio.DTOs.Solicitudes;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using SistemaVacaciones._03._AccesoDatos.Entidades;
 using SistemaVacaciones._04._Enum;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
 {
@@ -16,15 +17,15 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
             _context = context;
         }
 
-        public void Registrar(RegistarSolicitudDTO solicitudDto)
+        public async Task RegistrarAsync(RegistarSolicitudDTO solicitudDto)
         {
             if (solicitudDto.FechaFin.Date < solicitudDto.FechaInicio.Date)
             {
                 throw new InvalidOperationException("La fecha fin no puede ser menor que la fecha inicio.");
             }
 
-            var empleado = _context.Empleados
-                .FirstOrDefault(e => e.IdEmpleado == solicitudDto.IdEmpleado);
+            var empleado = await _context.Empleados
+                .FirstOrDefaultAsync(e => e.IdEmpleado == solicitudDto.IdEmpleado);
 
             if (empleado is null)
             {
@@ -46,8 +47,8 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Solicitudes
                 EstadoSolicitud.Pendiente,
                 string.Empty);
 
-            _context.SolicitudesVacaciones.Add(solicitud);
-            _context.SaveChanges();
+            await _context.SolicitudesVacaciones.AddAsync(solicitud);
+            await _context.SaveChangesAsync();
         }
     }
 }

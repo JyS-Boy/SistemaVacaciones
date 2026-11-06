@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using SistemaVacaciones._02._Negocio.DTOs.Empleados;
 using SistemaVacaciones._02._Negocio.Servicios.Empleados;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
@@ -9,7 +8,7 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
 {
     public class RegistrarEmpleado
     {
-        public static void RegistraEmpleado(VacacionesDbContext context)
+        public static async Task RegistraEmpleadoAsync(VacacionesDbContext context)
         {
             Console.Clear();
             Console.WriteLine("=== Registrar Empleado ===");
@@ -49,7 +48,7 @@ namespace SistemaVacaciones._01._Presentacion.Empleado
             try
             {
                 var servicioCrearEmpleado = new CrearEmpleado(context);
-                servicioCrearEmpleado.Registrar(empleadoDTO);
+                await servicioCrearEmpleado.RegistrarAsync(empleadoDTO);
                 Console.WriteLine("Empleado registrado exitosamente.");
             }
             catch (Exception ex)

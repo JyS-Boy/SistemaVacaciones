@@ -1,9 +1,9 @@
 ﻿using SistemaVacaciones._02._Negocio.DTOs.Empleados;
 using SistemaVacaciones._03._AccesoDatos.ContextoBD;
 using SistemaVacaciones._03._AccesoDatos.Entidades;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
 {
@@ -15,9 +15,10 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
         {
             _context = context;
         }
-        public List<ListarClienteDTO> ListEmpleados()
+        public async Task<List<ListarClienteDTO>> ListEmpleadosAsync()
         {
-            var empleados = _context.Set<Empleado>()
+            return await _context.Set<Empleado>()
+                .AsNoTracking()
                 .Where(e => e.IsActive)
                 .Select(e => new ListarClienteDTO
                 {
@@ -26,8 +27,8 @@ namespace SistemaVacaciones._02._Negocio.Servicios.Empleados
                     Apellidos = e.Apellidos,
                     DiasDisponibles = e.DiasDisponibles
                 })
-                .ToList();
-            return empleados;
+                .OrderBy(e => e.Id)
+                .ToListAsync();
         }
     }
 }
